@@ -67,8 +67,9 @@ Organize the dataset as follows:
 
 ## 📊 Visual Dtection Result
 
-![](./figures/dataset-overview-1-1.jpg)
+![Image 1](./figures/dataset-overview-1-1.jpg)![Ground truth](./figures/dataset-overview-1-2.jpg)![Ours Model Detect](./figures/dataset-overview-1-3.jpg)
 
+![Image 2](./figures/dataset-overview-2-1.jpg)![Ground truth](./figures/dataset-overview-2-2.jpg)![Ours Model Detect](./figures/dataset-overview-2-3.jpg)
 
 ## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
