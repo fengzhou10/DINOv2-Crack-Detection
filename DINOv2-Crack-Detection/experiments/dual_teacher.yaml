@@ -1,0 +1,116 @@
+# 双教师知识蒸馏实验配置
+
+_base_: "../configs/default.yaml"
+
+# 实验配置
+experiment:
+  name: "dual_teacher_experiment"
+  description: "Dual-teacher knowledge distillation for crack detection"
+  tags: ["knowledge_distillation", "dual_teacher", "dino"]
+
+# 模型配置
+model:
+  type: "dual_teacher"
+  
+  # 基础配置
+  backbone_type: "dinov2_vitb14"
+  input_size: 224
+  
+  # 知识蒸馏配置
+  distill_config:
+    # 教师模型配置
+    teacher_large: "dinov2_vitl14"
+    teacher_base: "dinov2_vitb14"
+    
+    # 蒸馏层配置
+    distill_layers_base: [3, 7, 11]
+    distill_layers_large: [7, 15, 23]
+    
+    # 蒸馏参数
+    temperature: 3.0
+    large_weight: 0.6
+    base_weight: 0.4
+    distill_weight: 0.3
+    
+    # 特征中心化
+    use_feature_centralization: true
+    center_momentum: 0.9
+  
+  # 通道注意力融合
+  cafm_config:
+    reduction_ratio: 4
+    fusion_channels: 1024
+
+# 训练配置
+training:
+  # 训练参数
+  epochs: 50
+  batch_size: 8
+  val_batch_size: 1
+  num_workers: 4
+  
+  # 优化器配置
+  optimizer: "adamw"
+  lr_backbone: 1e-5
+  lr_decoder: 1e-4
+  lr_adapters: 1e-4
+  lr_fusion: 1e-4
+  weight_decay: 0.01
+  
+  # 学习率调度
+  scheduler: "cosine"
+  warmup_epochs: 5
+  
+  # 损失函数
+  crack_weight: 4.0
+  seg_weight: 0.7
+  distill_weight: 0.3
+  
+  # 训练策略
+  gradient_clip: 1.0
+  early_stopping_patience: 20
+  save_interval: 10
+  
+  # 结果目录
+  result_dir: "results/dual_teacher"
+  log_interval: 10
+
+# 数据配置
+data:
+  # 数据集路径
+  train_img_dir: "data/DeepCrack/train_images"
+  train_lab_dir: "data/DeepCrack/train_labels"
+  val_img_dir: "data/DeepCrack/val_images"
+  val_lab_dir: "data/DeepCrack/val_labels"
+  test_img_dir: "data/DeepCrack/test_images"
+  test_lab_dir: "data/DeepCrack/test_labels"
+  
+  # 数据参数
+  image_size: 224
+  augment: true
+  normalize_mean: [0.485, 0.456, 0.406]
+  normalize_std: [0.229, 0.224, 0.225]
+
+# 测试配置
+testing:
+  batch_size: 1
+  threshold: 0.5
+  eval_pgd: true
+  pgd:
+    epsilon: 0.05
+    alpha: 0.003
+    iterations: 10
+
+# 硬件配置
+hardware:
+  device: "cuda"
+  gpu_ids: [0]
+  precision: "fp32"
+  benchmark: true
+
+# 预期结果
+expected_results:
+  crack_iou: 0.6110
+  f1_score: 0.7487
+  cpa: 0.8204
+  pgd_robustness: 0.2261

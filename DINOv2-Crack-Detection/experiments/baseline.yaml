@@ -1,0 +1,91 @@
+# 基线实验配置
+# 基于DINOv2-base的基础裂缝检测模型
+
+_base_: "../configs/default.yaml"
+
+# 实验配置
+experiment:
+  name: "baseline_experiment"
+  description: "Baseline crack detection model with DINOv2-base encoder"
+  tags: ["baseline", "dino", "crack_detection"]
+
+# 模型配置
+model:
+  type: "base"
+  
+  # 基础配置
+  backbone_type: "dinov2_vitb14"
+  input_size: 224
+  
+  # 解码器配置
+  decoder_channels: [512, 256, 128, 64]
+  decoder_upsample_factors: [2, 2, 2]
+
+# 训练配置
+training:
+  # 训练参数
+  epochs: 50
+  batch_size: 8
+  val_batch_size: 1
+  num_workers: 4
+  
+  # 优化器
+  optimizer: "adamw"
+  lr_backbone: 1e-5
+  lr_decoder: 1e-4
+  weight_decay: 0.01
+  
+  # 学习率调度
+  scheduler: "cosine"
+  warmup_epochs: 5
+  
+  # 损失函数
+  crack_weight: 4.0
+  
+  # 训练策略
+  gradient_clip: 1.0
+  early_stopping_patience: 20
+  save_interval: 10
+  
+  # 结果目录
+  result_dir: "results/baseline"
+  log_interval: 10
+
+# 数据配置
+data:
+  # 数据集路径
+  train_img_dir: "data/DeepCrack/train_images"
+  train_lab_dir: "data/DeepCrack/train_labels"
+  val_img_dir: "data/DeepCrack/val_images"
+  val_lab_dir: "data/DeepCrack/val_labels"
+  test_img_dir: "data/DeepCrack/test_images"
+  test_lab_dir: "data/DeepCrack/test_labels"
+  
+  # 数据参数
+  image_size: 224
+  augment: true
+  normalize_mean: [0.485, 0.456, 0.406]
+  normalize_std: [0.229, 0.224, 0.225]
+
+# 测试配置
+testing:
+  batch_size: 1
+  threshold: 0.5
+  eval_pgd: true
+  pgd:
+    epsilon: 0.03
+    alpha: 0.01
+    iterations: 10
+
+# 硬件配置
+hardware:
+  device: "cuda"
+  gpu_ids: [0]
+  precision: "fp32"
+  benchmark: true
+
+# 预期结果
+expected_results:
+  crack_iou: 0.6046
+  f1_score: 0.7413
+  pgd_robustness: 0.2069
