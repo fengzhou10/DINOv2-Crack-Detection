@@ -67,7 +67,7 @@ Organize the dataset as follows:
 
 ## 📊 Visual Dtection Result
 
-![](./figures/dataset-overview-1.jpg)
+![](./figures/dataset-overview-1-1.jpg)
 
 
 ## 📄 License
