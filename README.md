@@ -67,15 +67,19 @@ Organize the dataset as follows:
 
 ## 📊 Visual Dtection Result
 
-![Image 1](./figures/dataset-overview-1-1.jpg)![Ground truth](./figures/dataset-overview-1-2.jpg)![Ours Model Detect](./figures/dataset-overview-1-3.jpg)
+|Image|Ground truth|Ours Model|
+|:---|:---|:---|
+|![Image 1](./figures/dataset-overview-1-1.jpg)|![Ground truth](./figures/dataset-overview-1-2.jpg)|![Ours Model Detect](./figures/dataset-overview-1-3.png)|
+|![Image 2](./figures/dataset-overview-2-1.jpg)|![Ground truth](./figures/dataset-overview-2-2.jpg)|![Ours Model Detect](./figures/dataset-overview-2-3.png)|
 
-![Image 2](./figures/dataset-overview-2-1.jpg)![Ground truth](./figures/dataset-overview-2-2.jpg)![Ours Model Detect](./figures/dataset-overview-2-3.jpg)
 
 ## 📄 License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 
 ## 🙏 Acknowledgments
+
 Thanks to the DINOv2 team for their excellent pre-trained models  
 
 Thanks to the DeepCrack dataset providers  
